@@ -2,13 +2,16 @@ namespace SpriteKind {
     export const Plant = SpriteKind.create()
 }
 function setLevel (level: number) {
-    switch(level) {
+    switch (level) {
         case 1:
-        break;
+            break;
         default:
-        break;
+            break;
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`apple_sign`, function (sprite, location) {
+    selectSeedToPlant("apple");
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (state == State.TitleScreen) {
         return;
@@ -17,8 +20,14 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     	
     }
     if (tiles.tileAtLocationEquals(player.tilemapLocation(), assets.tile`myTile0`)) {
-        plantSeed("carrot")
+        plantSeed()
     }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`tomato_sign`, function (sprite, location) {
+    selectSeedToPlant("tomato");
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`eggplant_sign0`, function (sprite, location) {
+    selectSeedToPlant("eggplant");
 })
 function setTitleScreen () {
     scene.setBackgroundImage(img`
@@ -144,6 +153,15 @@ function setTitleScreen () {
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
         `)
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`carrot_sign`, function (sprite, location) {
+    selectSeedToPlant("carrot");
+})
+function isTilemapLoactionEqual (a: Sprite, b: Sprite) {
+    return a.tilemapLocation().x == b.tilemapLocation().x && a.tilemapLocation().y == b.tilemapLocation().y
+}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`strawberry_sign`, function (sprite, location) {
+    selectSeedToPlant("strawberry");
+})
 function createPlayer () {
     player = sprites.create(img`
         . . . . . . f f f f . . . . . . 
@@ -167,9 +185,25 @@ function createPlayer () {
     controller.moveSprite(player)
     scene.cameraFollowSprite(player)
 }
-function plantSeed (plant: string) {
-    if (plant == "carrot") {
-        seed_carrot = sprites.create(img`
+function plantSeed () {
+    if (seedToPlant == null) {
+        player.sayText("Oh no! I have no more seeds left!", 2000)
+        return
+    }
+    let alreadyPlanted = seedsPlanted.some((plant: Sprite): boolean => {
+        if (DEBUG_MODE) {
+            console.log(`sprite: ${plant.tilemapLocation().x}, ${plant.tilemapLocation().y}`);
+            console.log(`player: ${player.tilemapLocation().x}, ${player.tilemapLocation().y}`);
+        }
+
+        return isTilemapLoactionEqual(plant, player);
+    });
+if (alreadyPlanted) {
+        player.sayText("Hey! We already planted here!", 2000)
+        return
+    }
+    if (seedToPlant == "carrot") {
+        plant = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . 4 . . . . 
@@ -187,34 +221,71 @@ function plantSeed (plant: string) {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, SpriteKind.Plant)
-        tiles.placeOnTile(seed_carrot, player.tilemapLocation())
-    } else if (plant == "cabbage") {
-        seed_cabbage = sprites.create(img`
+        tiles.placeOnTile(plant, player.tilemapLocation())
+    } else if (seedToPlant == "apple") {
+        plant = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . 7 . . . . 
-            . . . 7 . . . . . . . . . . . . 
+            . . . . . . . . . . . 2 . . . . 
+            . . . 2 . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . . . . 7 . . . . . . . . . 
-            . . 7 . . . . . . 7 . . 7 . . . 
+            . . . . . . 2 . . . . . . . . . 
+            . . 2 . . . . . . 2 . . 2 . . . 
             . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . 7 . . . . 
-            . . . . 7 . . . . . . . . . . . 
-            . . . . . . 7 . . . . . . . . . 
+            . . . . . . . . . . . 2 . . . . 
+            . . . . 2 . . . . . . . . . . . 
+            . . . . . . 2 . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . . . . . . . 7 . . 7 . . . 
-            . . . 7 . . . . . . . . . . . . 
+            . . . . . . . . . 2 . . 2 . . . 
+            . . . 2 . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, SpriteKind.Plant)
-        tiles.placeOnTile(seed_cabbage, player.tilemapLocation())
+        tiles.placeOnTile(plant, player.tilemapLocation())
+    } else if (seedToPlant == "eggplant") {
+        plant = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . a . . . . 
+            . . . a . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . a . . . . . . . . . 
+            . . a . . . . . . a . . a . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . a . . . . 
+            . . . . a . . . . . . . . . . . 
+            . . . . . . a . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . a . . a . . . 
+            . . . a . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.Plant)
+        tiles.placeOnTile(plant, player.tilemapLocation())
+    } else {
+    	
     }
+    seedsPlanted.push(plant)
 }
-let seed_cabbage: Sprite = null
-let seed_carrot: Sprite = null
-let player: Sprite = null
-// Global Variables
+let seedToPlant: PlantType = null
 let CURRENT_LEVEL = 0
+let seedsPlanted: Sprite[] = []
+let player: Sprite = null
+let seed_carrot = null
+let seed_cabbage = null
+let plant: Sprite = null
+let playerSelectSeedTexts = [
+"Oh cool!",
+"Finally, some",
+"Acquired!",
+"Aw, shucks!"
+]
+type PlantType = "carrot" | "eggplant" | "tomato" | "strawberry" | "apple";
+function selectSeedToPlant(seed: PlantType) {
+    seedToPlant = seed;
+    player.say(`${playerSelectSeedTexts[Math.randomRange(0, playerSelectSeedTexts.length)]} ${seed} seeds!`)
+}
+let DEBUG_MODE = true
 enum State {
     TitleScreen,
     Play,
@@ -225,3 +296,6 @@ let state: State = State.Play;
 scene.setBackgroundColor(7)
 tiles.setCurrentTilemap(tilemap`level1`)
 createPlayer()
+game.onUpdateInterval(500, function () {
+	
+})
