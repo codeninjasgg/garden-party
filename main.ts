@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const Plant = SpriteKind.create()
+}
 function setLevel (level: number) {
     switch(level) {
         case 1:
@@ -12,6 +15,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     if (state == State.Play) {
     	
+    }
+    if (tiles.tileAtLocationEquals(player.tilemapLocation(), assets.tile`myTile0`)) {
+        plantSeed("carrot")
     }
 })
 function setTitleScreen () {
@@ -138,9 +144,6 @@ function setTitleScreen () {
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
         `)
 }
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-	
-})
 function createPlayer () {
     player = sprites.create(img`
         . . . . . . f f f f . . . . . . 
@@ -164,6 +167,51 @@ function createPlayer () {
     controller.moveSprite(player)
     scene.cameraFollowSprite(player)
 }
+function plantSeed (plant: string) {
+    if (plant == "carrot") {
+        seed_carrot = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . 4 . . . . 
+            . . . 4 . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 4 . . . . . . . . . 
+            . . 4 . . . . . . 4 . . 4 . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . 4 . . . . 
+            . . . . 4 . . . . . . . . . . . 
+            . . . . . . 4 . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . 4 . . 4 . . . 
+            . . . 4 . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.Plant)
+        tiles.placeOnTile(seed_carrot, player.tilemapLocation())
+    } else if (plant == "cabbage") {
+        seed_cabbage = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . 7 . . . . 
+            . . . 7 . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 7 . . . . . . . . . 
+            . . 7 . . . . . . 7 . . 7 . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . 7 . . . . 
+            . . . . 7 . . . . . . . . . . . 
+            . . . . . . 7 . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . 7 . . 7 . . . 
+            . . . 7 . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.Plant)
+        tiles.placeOnTile(seed_cabbage, player.tilemapLocation())
+    }
+}
+let seed_cabbage: Sprite = null
+let seed_carrot: Sprite = null
 let player: Sprite = null
 // Global Variables
 let CURRENT_LEVEL = 0
