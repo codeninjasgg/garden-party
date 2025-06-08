@@ -178,7 +178,6 @@ for (let index = 0; index < 3; index++) {
     attachStatusBar(mySprite)
 }
 game.onUpdateInterval(1000, function () {
-    console.log(statusbars.allOfKind(StatusBarKind.Health).length)
     for (let value of statusbars.allOfKind(StatusBarKind.Health)) {
         value.value += -10
     }
