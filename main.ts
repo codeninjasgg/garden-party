@@ -30,7 +30,24 @@ function setTitleScreen () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Plant, function (sprite, otherSprite) {
     // to water
     if (controller.B.isPressed()) {
-        mySprite = sprites.create(assets.image`water`, SpriteKind.Water)
+        mySprite = sprites.create(img`
+            . . . . . . . . . . . . . . . .
+            . . . . . . . . . . . . . . . .
+            . . . . . . . . . . 9 . . . . .
+            . . 9 . . . . . . . . . . . . .
+            . . . . . . 9 . . . . . . . . .
+            . . . . . . . . . . . . 9 . . .
+            . . . . . . . . . . . . . . . .
+            . . 9 . . . . . 9 . . . . . . .
+            . . . . . . . . . . . . . . . .
+            . . . . . . 9 . . . . . . . . .
+            . . . . . . . . . . 9 . . . . .
+            . . . . . . . . . . . . . . . .
+            . . . . . 9 . . . . . . 9 . . .
+            . . . . . . . . . . . . . . . .
+            . . . . . . . . . . . . . . . .
+            . . . . . . . . . . . . . . . .
+        `, SpriteKind.Water)
         tiles.placeOnTile(mySprite, otherSprite.tilemapLocation())
         attachStatusBar(otherSprite)
     }
