@@ -20,6 +20,16 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         plantSeed()
     }
 })
+function setStatusBars () {
+    statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+    statusbar.setBarBorder(1, 15)
+    statusbar.setColor(7, 2)
+    statusbar.attachToSprite(player)
+    statusbar.setLabel("HP")
+    statusbar.value = 200
+    statusbar.positionDirection(CollisionDirection.Top)
+    statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
+}
 function setTitleScreen () {
     scene.setBackgroundImage(img`
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -147,6 +157,16 @@ function setTitleScreen () {
 function isTilemapLoactionEqual (a: Sprite, b: Sprite) {
     return a.tilemapLocation().x == b.tilemapLocation().x && a.tilemapLocation().y == b.tilemapLocation().y
 }
+function attachStatusBar (plant: Sprite) {
+    statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+    statusbar.setBarBorder(1, 15)
+    statusbar.setColor(7, 2)
+    statusbar.attachToSprite(plant)
+    statusbar.setLabel("HP")
+    statusbar.value = 200
+    statusbar.positionDirection(CollisionDirection.Top)
+    statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
+}
 function createPlayer () {
     player = sprites.create(img`
         . . . . . . f f f f . . . . . . 
@@ -252,6 +272,8 @@ if (alreadyPlanted) {
     }
     seedsPlanted.push(plant)
 }
+let statusbar: StatusBarSprite = null
+let mySprite: Sprite = null
 let plant: Sprite = null
 let seed_cabbage = null
 let seed_carrot = null
@@ -281,6 +303,34 @@ let state: State = State.Play;
 scene.setBackgroundColor(7)
 tiles.setCurrentTilemap(tilemap`level1`)
 createPlayer()
-game.onUpdateInterval(500, function () {
-	
+setStatusBars()
+let column = 4
+for (let index = 0; index < 3; index++) {
+    mySprite = sprites.create(img`
+        . . . . . . . 6 . . . . . . . . 
+        . . . . . . 8 6 6 . . . 6 8 . . 
+        . . . e e e 8 8 6 6 . 6 7 8 . . 
+        . . e 2 2 2 2 e 8 6 6 7 6 . . . 
+        . e 2 2 4 4 2 7 7 7 7 7 8 6 . . 
+        . e 2 4 4 2 6 7 7 7 6 7 6 8 8 . 
+        e 2 4 5 2 2 6 7 7 6 2 7 7 6 . . 
+        e 2 4 4 2 2 6 7 6 2 2 6 7 7 6 . 
+        e 2 4 2 2 2 6 6 2 2 2 e 7 7 6 . 
+        e 2 4 2 2 4 2 2 2 4 2 2 e 7 6 . 
+        e 2 4 2 2 2 2 2 2 2 2 2 e c 6 . 
+        e 2 2 2 2 2 2 2 4 e 2 e e c . . 
+        e e 2 e 2 2 4 2 2 e e e c . . . 
+        e e e e 2 e 2 2 e e e c . . . . 
+        e e e 2 e e c e c c c . . . . . 
+        . c c c c c c c . . . . . . . . 
+        `, SpriteKind.Plant)
+    tiles.placeOnTile(mySprite, tiles.getTileLocation(column, 1))
+    column += 1
+    attachStatusBar(mySprite)
+}
+game.onUpdateInterval(1000, function () {
+    console.log(statusbars.allOfKind(StatusBarKind.Health).length)
+    for (let value of statusbars.allOfKind(StatusBarKind.Health)) {
+        value.value += -10
+    }
 })
