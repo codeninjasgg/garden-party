@@ -5,7 +5,7 @@ namespace SpriteKind {
 namespace StatusBarKind {
     export const Growth = StatusBarKind.create()
 }
-function setLevel (level: number) {
+function setLevel(level: number) {
     switch (level) {
         case 1:
             break;
@@ -18,36 +18,19 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         return;
     }
     if (state == State.Play) {
-    	
+
     }
     if (tiles.tileAtLocationEquals(player.tilemapLocation(), assets.tile`myTile0`)) {
         plantSeed()
     }
 })
-function setTitleScreen () {
+function setTitleScreen() {
     scene.setBackgroundImage(assets.image`title_screen`)
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Plant, function (sprite, otherSprite) {
     // to water
     if (controller.B.isPressed()) {
-        mySprite = sprites.create(img`
-            . . . . . . . . . . . . . . . .
-            . . . . . . . . . . . . . . . .
-            . . . . . . . . . . 9 . . . . .
-            . . 9 . . . . . . . . . . . . .
-            . . . . . . 9 . . . . . . . . .
-            . . . . . . . . . . . . 9 . . .
-            . . . . . . . . . . . . . . . .
-            . . 9 . . . . . 9 . . . . . . .
-            . . . . . . . . . . . . . . . .
-            . . . . . . 9 . . . . . . . . .
-            . . . . . . . . . . 9 . . . . .
-            . . . . . . . . . . . . . . . .
-            . . . . . 9 . . . . . . 9 . . .
-            . . . . . . . . . . . . . . . .
-            . . . . . . . . . . . . . . . .
-            . . . . . . . . . . . . . . . .
-        `, SpriteKind.Water)
+        mySprite = sprites.create(assets.image`myImage`, SpriteKind.Water)
         tiles.placeOnTile(mySprite, otherSprite.tilemapLocation())
         attachStatusBar(otherSprite)
     }
@@ -73,21 +56,21 @@ statusbars.onZero(StatusBarKind.Growth, function (status) {
         `), CustomAssets.carrotSeed) {
         status.spriteAttachedTo().sayText("Seedling!")
     } else if (false) {
-    	
+
     } else if (false) {
-    	
+
     } else if (false) {
-    	
+
     } else if (false) {
-    	
+
     } else {
-    	
+
     }
 })
-function isTilemapLoactionEqual (a: Sprite, b: Sprite) {
+function isTilemapLoactionEqual(a: Sprite, b: Sprite) {
     return a.tilemapLocation().x == b.tilemapLocation().x && a.tilemapLocation().y == b.tilemapLocation().y
 }
-function attachStatusBar (plant: Sprite) {
+function attachStatusBar(plant: Sprite) {
     statusbar = statusbars.create(15, 4, StatusBarKind.Growth)
     statusbar.setBarBorder(1, 15)
     statusbar.setColor(7, 2)
@@ -96,13 +79,13 @@ function attachStatusBar (plant: Sprite) {
     statusbar.attachToSprite(plant)
     statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
 }
-function createPlayer () {
+function createPlayer() {
     player = sprites.create(CustomAssets.playerFemale, SpriteKind.Player)
     tiles.placeOnTile(player, tiles.getTileLocation(1, 1))
     controller.moveSprite(player)
     scene.cameraFollowSprite(player)
 }
-function plantSeed () {
+function plantSeed() {
     if (seedToPlant == null) {
         player.sayText("Oh no! I have no more seeds left!", 2000)
         return
@@ -115,7 +98,7 @@ function plantSeed () {
 
         return isTilemapLoactionEqual(plant, player);
     });
-if (alreadyPlanted) {
+    if (alreadyPlanted) {
         player.sayText("Hey! We already planted here!", 2000)
         return
     }
@@ -129,7 +112,7 @@ if (alreadyPlanted) {
         plant = sprites.create(CustomAssets.eggplantSeed, SpriteKind.Plant)
         tiles.placeOnTile(plant, player.tilemapLocation())
     } else {
-    	
+
     }
     seedsPlanted.push(plant)
 }
@@ -227,10 +210,10 @@ enum PlantState {
     fruiting
 }
 let playerSelectSeedTexts = [
-"Oh cool!",
-"Finally, some",
-"Acquired!",
-"Aw, shucks!"
+    "Oh cool!",
+    "Finally, some",
+    "Acquired!",
+    "Aw, shucks!"
 ]
 type PlantType = "carrot" | "eggplant" | "tomato" | "strawberry" | "apple";
 function selectSeedToPlant(seed: PlantType) {
