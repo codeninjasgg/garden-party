@@ -9,9 +9,6 @@ function setLevel (level: number) {
             break;
     }
 }
-scene.onOverlapTile(SpriteKind.Player, assets.tile`apple_sign`, function (sprite, location) {
-    selectSeedToPlant("apple");
-})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (state == State.TitleScreen) {
         return;
@@ -22,12 +19,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (tiles.tileAtLocationEquals(player.tilemapLocation(), assets.tile`myTile0`)) {
         plantSeed()
     }
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`tomato_sign`, function (sprite, location) {
-    selectSeedToPlant("tomato");
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`eggplant_sign0`, function (sprite, location) {
-    selectSeedToPlant("eggplant");
 })
 function setTitleScreen () {
     scene.setBackgroundImage(img`
@@ -153,15 +144,9 @@ function setTitleScreen () {
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
         `)
 }
-scene.onOverlapTile(SpriteKind.Player, assets.tile`carrot_sign`, function (sprite, location) {
-    selectSeedToPlant("carrot");
-})
 function isTilemapLoactionEqual (a: Sprite, b: Sprite) {
     return a.tilemapLocation().x == b.tilemapLocation().x && a.tilemapLocation().y == b.tilemapLocation().y
 }
-scene.onOverlapTile(SpriteKind.Player, assets.tile`strawberry_sign`, function (sprite, location) {
-    selectSeedToPlant("strawberry");
-})
 function createPlayer () {
     player = sprites.create(img`
         . . . . . . f f f f . . . . . . 
@@ -267,13 +252,13 @@ if (alreadyPlanted) {
     }
     seedsPlanted.push(plant)
 }
-let seedToPlant: PlantType = null
-let CURRENT_LEVEL = 0
-let seedsPlanted: Sprite[] = []
-let player: Sprite = null
-let seed_carrot = null
-let seed_cabbage = null
 let plant: Sprite = null
+let seed_cabbage = null
+let seed_carrot = null
+let player: Sprite = null
+let seedsPlanted: Sprite[] = []
+let CURRENT_LEVEL = 0
+let seedToPlant: PlantType = null
 let playerSelectSeedTexts = [
 "Oh cool!",
 "Finally, some",
