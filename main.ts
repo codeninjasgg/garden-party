@@ -72,14 +72,14 @@ if (alreadyPlanted) {
     seedsPlanted.push(plant)
 }
 let mySprite: Sprite = null
-let seedToPlant: PlantType = null
-let CURRENT_LEVEL = 0
-let seedsPlanted: Sprite[] = []
-let player: Sprite = null
-let seed_carrot = null
-let seed_cabbage = null
-let plant: Sprite = null
 let statusbar: StatusBarSprite = null
+let plant: Sprite = null
+let seed_cabbage = null
+let seed_carrot = null
+let player: Sprite = null
+let seedsPlanted: Sprite[] = []
+let CURRENT_LEVEL = 0
+let seedToPlant: PlantType = null
 namespace StatusBarKind {
     export const Growth = SpriteKind.create();
 }
