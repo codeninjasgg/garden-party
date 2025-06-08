@@ -20,16 +20,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         plantSeed()
     }
 })
-function setStatusBars () {
-    statusbar = statusbars.create(20, 4, StatusBarKind.Health)
-    statusbar.setBarBorder(1, 15)
-    statusbar.setColor(7, 2)
-    statusbar.attachToSprite(player)
-    statusbar.setLabel("HP")
-    statusbar.value = 200
-    statusbar.positionDirection(CollisionDirection.Top)
-    statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
-}
 function setTitleScreen () {
     scene.setBackgroundImage(img`
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -158,14 +148,12 @@ function isTilemapLoactionEqual (a: Sprite, b: Sprite) {
     return a.tilemapLocation().x == b.tilemapLocation().x && a.tilemapLocation().y == b.tilemapLocation().y
 }
 function attachStatusBar (plant: Sprite) {
-    statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+    statusbar = statusbars.create(15, 4, StatusBarKind.Health)
     statusbar.setBarBorder(1, 15)
     statusbar.setColor(7, 2)
-    statusbar.attachToSprite(plant)
-    statusbar.setLabel("HP")
     statusbar.value = 200
     statusbar.positionDirection(CollisionDirection.Top)
-    statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
+    statusbar.attachToSprite(plant)
 }
 function createPlayer () {
     player = sprites.create(img`
@@ -303,7 +291,6 @@ let state: State = State.Play;
 scene.setBackgroundColor(7)
 tiles.setCurrentTilemap(tilemap`level1`)
 createPlayer()
-setStatusBars()
 let column = 4
 for (let index = 0; index < 3; index++) {
     mySprite = sprites.create(img`
