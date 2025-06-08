@@ -71,15 +71,83 @@ if (alreadyPlanted) {
     }
     seedsPlanted.push(plant)
 }
-let statusbar: StatusBarSprite = null
 let mySprite: Sprite = null
-let plant: Sprite = null
-let seed_cabbage = null
-let seed_carrot = null
-let player: Sprite = null
-let seedsPlanted: Sprite[] = []
-let CURRENT_LEVEL = 0
 let seedToPlant: PlantType = null
+let CURRENT_LEVEL = 0
+let seedsPlanted: Sprite[] = []
+let player: Sprite = null
+let seed_carrot = null
+let seed_cabbage = null
+let plant: Sprite = null
+let statusbar: StatusBarSprite = null
+namespace StatusBarKind {
+    export const Growth = SpriteKind.create();
+}
+enum PlantState {
+    planted,
+    planted_watered,
+    seedling,
+    seedling_watered,
+    ripening,
+    ripening_watered,
+    fruiting
+}
+class Plant {
+    statusbar: StatusBarSprite = null;
+    type: PlantType = null;
+    sprite: Sprite = null;
+    state: PlantState = null;
+
+    constructor(plantType: PlantType) {
+        this.type = plantType;
+        this.createSprite();
+    }
+
+    private attachTimerStatusBar() {
+        this.statusbar = statusbars.create(15, 4, StatusBarKind.Growth);
+        this.statusbar.setBarBorder(1, 15);
+        this.statusbar.setColor(7, 2);
+        this.statusbar.value = 10;
+        this.statusbar.positionDirection(CollisionDirection.Top);
+        this.statusbar.attachToSprite(plant);
+    }
+
+    private setTimerValue(time: number) {
+        this.statusbar.value = time;
+    }
+
+    private createSprite() {
+        if (seedToPlant == "carrot") {
+            this.sprite = sprites.create(assets.image`seed_carrot`, SpriteKind.Plant)
+        } else if (seedToPlant == "apple") {
+            this.sprite = sprites.create(assets.image`seed_tomato`, SpriteKind.Plant)
+        } else if (seedToPlant == "eggplant") {
+            this.sprite = sprites.create(assets.image`seed_crab_apple`, SpriteKind.Plant)
+        }
+        if (this.sprite) {
+            tiles.placeOnTile(this.sprite, player.tilemapLocation())
+        }
+    }
+
+    public water() {
+        switch (this.state) {
+            case PlantState.planted:
+                this.state = PlantState.planted_watered;
+            case PlantState.seedling:
+                this.state = PlantState.seedling_watered;
+            case PlantState.ripening:
+                this.state = PlantState.ripening_watered;
+            case PlantState.fruiting:
+                this.state = PlantState.fruiting;
+            default:
+                break;
+        }
+    }
+
+    public grow() {
+        // whenever the plant is watered, grow the plant
+    }
+}
 let playerSelectSeedTexts = [
 "Oh cool!",
 "Finally, some",
