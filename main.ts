@@ -61,10 +61,10 @@ if (alreadyPlanted) {
         plant = sprites.create(assets.image`seed_carrot`, SpriteKind.Plant)
         tiles.placeOnTile(plant, player.tilemapLocation())
     } else if (seedToPlant == "apple") {
-        plant = sprites.create(assets.image`seed_tomato`, SpriteKind.Plant)
+        plant = sprites.create(assets.image`seed_carrot`, SpriteKind.Plant)
         tiles.placeOnTile(plant, player.tilemapLocation())
     } else if (seedToPlant == "eggplant") {
-        plant = sprites.create(assets.image`seed_crab_apple`, SpriteKind.Plant)
+        plant = sprites.create(assets.image`seed_carrot`, SpriteKind.Plant)
         tiles.placeOnTile(plant, player.tilemapLocation())
     } else {
     	
@@ -72,7 +72,6 @@ if (alreadyPlanted) {
     seedsPlanted.push(plant)
 }
 let mySprite: Sprite = null
-let seedToPlant: PlantType = null
 let CURRENT_LEVEL = 0
 let seedsPlanted: Sprite[] = []
 let player: Sprite = null
@@ -80,6 +79,8 @@ let seed_carrot = null
 let seed_cabbage = null
 let plant: Sprite = null
 let statusbar: StatusBarSprite = null
+let seedToPlant = ""
+seedToPlant = "carrot"
 namespace StatusBarKind {
     export const Growth = SpriteKind.create();
 }
